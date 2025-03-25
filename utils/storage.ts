@@ -1,10 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const SAFE_MODE_KEY = "safe_mode_state";
-
-export const saveSafeModeState = async (isEnabled: boolean) => {
+export const saveSafeModeState = async (state: boolean) => {
   try {
-    await AsyncStorage.setItem(SAFE_MODE_KEY, JSON.stringify(isEnabled));
+    await AsyncStorage.setItem("safeMode", JSON.stringify(state));
   } catch (error) {
     console.error("Error saving Safe Mode state:", error);
   }
@@ -12,10 +10,10 @@ export const saveSafeModeState = async (isEnabled: boolean) => {
 
 export const getSafeModeState = async (): Promise<boolean> => {
   try {
-    const value = await AsyncStorage.getItem(SAFE_MODE_KEY);
-    return value !== null ? JSON.parse(value) : false; // Default to false
+    const value = await AsyncStorage.getItem("safeMode");
+    return value ? JSON.parse(value) : false;
   } catch (error) {
-    console.error("Error retrieving Safe Mode state:", error);
+    console.error("Error loading Safe Mode state:", error);
     return false;
   }
 };

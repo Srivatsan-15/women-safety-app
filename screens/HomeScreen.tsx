@@ -1,55 +1,80 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Switch } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, Switch, TouchableOpacity } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
-// Define Stack Param List
-type RootStackParamList = {
-  Home: undefined;
-  SOS: undefined;
-  SafeRoute: undefined;
-  Alerts: undefined;
-  Guardian: undefined;
-};
+import { saveSafeModeState, getSafeModeState } from "../utils/storage"; // Import storage functions
+import { RootStackParamList } from "../navigation/types";
 
 // Define Props Type for HomeScreen
 type Props = NativeStackScreenProps<RootStackParamList, "Home">;
 
 export default function HomeScreen({ navigation }: Props) {
-  const [safeMode, setSafeMode] = useState(false);
+  const [isSafeMode, setIsSafeMode] = useState<boolean>(false);
 
-  // Toggle Safe Mode and store state in AsyncStorage
+  // Load Safe Mode state from storage when the screen loads
+  useEffect(() => { 
+    const loadSafeModeState = async () => {
+      const savedState = await getSafeModeState();
+      setIsSafeMode(savedState);
+    };
+    loadSafeModeState();
+  }, []);
+
+  // Handle Safe Mode Toggle
   const toggleSafeMode = async () => {
-    const newMode = !safeMode;
-    setSafeMode(newMode);
-    await AsyncStorage.setItem("safeMode", JSON.stringify(newMode));
+    const newState = !isSafeMode;
+    setIsSafeMode(newState);
+    await saveSafeModeState(newState);
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Women's Safety App</Text>
+      <Text style={styles.header}>Women's Safety App</Text>
 
       {/* Safe Mode Toggle */}
-      <View style={styles.row}>
-        <Text style={styles.label}>Safe Mode</Text>
-        <Switch value={safeMode} onValueChange={toggleSafeMode} />
+      <View style={styles.safeModeContainer}>
+        <Text style={styles.safeModeText}>Safe Mode</Text>
+        <Switch value={isSafeMode} onValueChange={toggleSafeMode} />
       </View>
 
-      {/* Navigation Buttons */}
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("SafeRoute")}>
+      {/* Feature Buttons */}
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          console.log("Navigating to SafeRouteScreen...");
+          navigation.navigate("SafeRoute");
+        }}
+      >
         <Text style={styles.buttonText}>Safe Route Planning</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Alerts")}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          console.log("Navigating to LiveAlertsScreen...");
+          navigation.navigate("LiveAlerts");
+        }}
+      >
         <Text style={styles.buttonText}>Live Safety Alerts</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Guardian")}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          console.log("Navigating to GuardianAccessScreen...");
+          navigation.navigate("GuardianAccess");
+        }}
+      >
         <Text style={styles.buttonText}>Guardian Access</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={[styles.button, styles.sosButton]} onPress={() => navigation.navigate("SOS")}>
-        <Text style={styles.sosText}>Emergency SOS</Text>
+      <TouchableOpacity
+        style={[styles.button, styles.sosButton]}
+        onPress={() => {
+          console.log("Navigating to SOSScreen...");
+          navigation.navigate("SOS");
+        }}
+      >
+        <Text style={styles.buttonText}>Emergency SOS</Text>
       </TouchableOpacity>
     </View>
   );
@@ -58,52 +83,43 @@ export default function HomeScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#f8f9fa",
-    padding: 20,
+    paddingTop: 50,
   },
-  title: {
-    fontSize: 24,
+  header: {
+    fontSize: 22,
     fontWeight: "bold",
     marginBottom: 20,
-    color: "#333",
   },
-  row: {
+  safeModeContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    width: "100%",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    backgroundColor: "#e3e3e3",
+    width: "90%",
+    padding: 10,
+    backgroundColor: "#e0e0e0",
     borderRadius: 10,
     marginBottom: 20,
   },
-  label: {
+  safeModeText: {
     fontSize: 18,
-    color: "#333",
   },
   button: {
-    width: "100%",
-    backgroundColor: "#007bff",
+    width: "90%",
     padding: 15,
+    backgroundColor: "blue",
     borderRadius: 10,
+    marginVertical: 5,
     alignItems: "center",
-    marginBottom: 10,
   },
   buttonText: {
-    fontSize: 18,
-    color: "#fff",
+    color: "white",
+    fontSize: 16,
     fontWeight: "bold",
   },
   sosButton: {
-    backgroundColor: "#dc3545",
-  },
-  sosText: {
-    fontSize: 18,
-    color: "#fff",
-    fontWeight: "bold",
+    backgroundColor: "red",
   },
 });
 
