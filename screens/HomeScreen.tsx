@@ -34,48 +34,29 @@ export default function HomeScreen({ navigation }: Props) {
       <View style={styles.safeModeContainer}>
         <Text style={styles.safeModeText}>Safe Mode</Text>
         <Switch value={isSafeMode} onValueChange={toggleSafeMode} />
+        <Text style={[styles.safeModeStatus, isSafeMode ? styles.safeModeOn : styles.safeModeOff]}>
+          {isSafeMode ? "ON" : "OFF"}
+        </Text>
       </View>
 
       {/* Feature Buttons */}
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          console.log("Navigating to SafeRouteScreen...");
-          navigation.navigate("SafeRoute");
-        }}
-      >
-        <Text style={styles.buttonText}>Safe Route Planning</Text>
-      </TouchableOpacity>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("SafeRoute")}>
+          <Text style={styles.buttonText}>Safe Route Planning</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          console.log("Navigating to LiveAlertsScreen...");
-          navigation.navigate("LiveAlerts");
-        }}
-      >
-        <Text style={styles.buttonText}>Live Safety Alerts</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("LiveAlerts")}>
+          <Text style={styles.buttonText}>Live Safety Alerts</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          console.log("Navigating to GuardianAccessScreen...");
-          navigation.navigate("GuardianAccess");
-        }}
-      >
-        <Text style={styles.buttonText}>Guardian Access</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("GuardianAccess")}>
+          <Text style={styles.buttonText}>Guardian Access</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity
-        style={[styles.button, styles.sosButton]}
-        onPress={() => {
-          console.log("Navigating to SOSScreen...");
-          navigation.navigate("SOS");
-        }}
-      >
-        <Text style={styles.buttonText}>Emergency SOS</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={[styles.button, styles.sosButton]} onPress={() => navigation.navigate("SOS")}>
+          <Text style={styles.buttonText}>Emergency SOS</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -85,33 +66,58 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     backgroundColor: "#f8f9fa",
-    paddingTop: 50,
+    paddingTop: 80, // Increased spacing at the top
   },
   header: {
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 20,
+    color: "#333",
+    marginBottom: 30,
   },
   safeModeContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
     width: "90%",
-    padding: 10,
-    backgroundColor: "#e0e0e0",
-    borderRadius: 10,
-    marginBottom: 20,
+    padding: 15,
+    backgroundColor: "#ffffff",
+    borderRadius: 12,
+    elevation: 4, // Shadow effect (for Android)
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 2 },
+    alignItems: "center",
+    marginBottom: 25,
   },
   safeModeText: {
     fontSize: 18,
+    fontWeight: "bold",
+    color: "#555",
+    marginBottom: 8,
+  },
+  safeModeStatus: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginTop: 5, // Added margin to separate from the switch
+  },
+  safeModeOn: {
+    color: "green",
+  },
+  safeModeOff: {
+    color: "red",
+  },
+  buttonContainer: {
+    width: "90%",
+    alignItems: "center",
   },
   button: {
-    width: "90%",
+    width: "100%",
     padding: 15,
-    backgroundColor: "blue",
-    borderRadius: 10,
-    marginVertical: 5,
+    backgroundColor: "#007bff",
+    borderRadius: 12,
+    marginVertical: 8,
     alignItems: "center",
+    elevation: 3, // Shadow effect for Android
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 2 },
   },
   buttonText: {
     color: "white",
@@ -119,7 +125,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   sosButton: {
-    backgroundColor: "red",
+    backgroundColor: "#dc3545", // Red for SOS
   },
 });
 
