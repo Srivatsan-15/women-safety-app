@@ -4,4 +4,7 @@ export type RootStackParamList = {
     LiveAlerts: undefined;
     GuardianAccess: undefined;
     SOS: undefined;
+    Login: undefined;
+    Register: undefined;
+    Profile: undefined;
   };
