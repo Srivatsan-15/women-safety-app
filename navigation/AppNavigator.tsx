@@ -5,7 +5,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 // Import Screens from both parts
 import LoginScreen from "../screens/LoginScreen"; // Adjust imports as needed
 import RegisterScreen from "../screens/RegisterScreen"; // Adjust imports as needed
-import HomeScreen from "../screens/HomeScreen"; // Adjust imports as needed
+import HomeScreen from "../screens/HomeScreen"; // Regular User Home
+import GuardianHomeScreen from "../screens/GuardianHomeScreen"; // Guardian Home
 import SOSScreen from "../screens/SOSScreen"; // Import SOSScreen
 import LiveAlertsScreen from "../screens/LiveAlertsScreen"; // Import LiveAlertsScreen
 import SafeRouteScreen from "../screens/SafeRouteScreen"; // Import SafeRouteScreen
@@ -15,7 +16,8 @@ import GuardianAccessScreen from "../screens/GuardianAccessScreen"; // Import Gu
 export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
-  Home: undefined;
+  Home: undefined; // Regular user home
+  GuardianHome: undefined; // Guardian home screen
   SOS: undefined;
   LiveAlerts: undefined;
   SafeRoute: undefined;
@@ -40,7 +42,8 @@ export default function AppNavigator() {
         />
 
         {/* Screens for Home and Functional Features */}
-        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Home" component={HomeScreen} /> {/* Regular user Home */}
+        <Stack.Screen name="GuardianHome" component={GuardianHomeScreen} /> {/* Guardian Home */}
         <Stack.Screen name="SOS" component={SOSScreen} />
         <Stack.Screen name="LiveAlerts" component={LiveAlertsScreen} />
         <Stack.Screen name="SafeRoute" component={SafeRouteScreen} />
@@ -49,5 +52,3 @@ export default function AppNavigator() {
     </NavigationContainer>
   );
 }
-
-
